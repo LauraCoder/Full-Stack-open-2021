@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-//component for table line
+// component for table line
 const StatisticLine = ({ text, value }) => (
   <tr>
     <td>{text}</td>

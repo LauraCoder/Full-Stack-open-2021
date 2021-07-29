@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-//component for button elements
+// component for button elements
 const Button = ({handleClick, text}) => ( 
   <button onClick={handleClick}>
     {text}

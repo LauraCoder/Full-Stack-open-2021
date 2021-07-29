@@ -1,5 +1,6 @@
 import React from 'react'
 
+//component that renders the name of the course
 const Header = (props) => {
   return (
     <div>
@@ -8,6 +9,7 @@ const Header = (props) => {
   )
 }
 
+//component that renders a part and exercises
 const Part = (props) => {
   return (
     <div>
@@ -18,6 +20,7 @@ const Part = (props) => {
   )
 }
 
+//component that renders the parts and their number of exercises
 const Content = (props) => {
   return (
     <div>
@@ -28,6 +31,7 @@ const Content = (props) => {
   )
 }
 
+//component that renders the total number of exercises
 const Total = (props) => {
   return (
     <div>

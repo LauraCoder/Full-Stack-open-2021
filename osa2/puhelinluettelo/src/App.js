@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 //renders the filtering input field
 const Filter = ({ filterNames, handleFilter }) => {
@@ -44,15 +45,22 @@ const Contacts = ({ contacts }) => {
 }
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '0401231234' },
-    { name: 'Mari', number: '0407897889' },
-    { name: 'Heikki', number: '0400987654' },
-    { name: 'Aamu', number: '0404564567' }
-  ])
+  const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterNames, setFilter ] = useState('')
+
+  const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }
+  
+  useEffect(hook, [])
 
   const addName = (event) => {
     event.preventDefault()

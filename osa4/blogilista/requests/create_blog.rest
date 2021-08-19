@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Travel Blog",
+    "author": "Peter Traveler",
+    "url": "travelblog.com",
+    "likes": 10
+}

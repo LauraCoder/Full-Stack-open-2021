@@ -45,6 +45,16 @@ const App = () => {
             }, 2000)
             console.log("Contact updated", response)
           })
+          .catch(error => {
+            console.log(error.response.data)
+            setMessage({
+              text: error.response.data.error, 
+              type: "error"
+            })
+            setTimeout(() => {
+              setMessage(null)
+            }, 3000)
+          })
       }
     } else {
       nameService
@@ -59,6 +69,16 @@ const App = () => {
             setMessage(null)
           }, 2000)
           console.log("Contact created", response)
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          setMessage({
+            text: error.response.data.error, 
+            type: "error"
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 3000)
         })
     }
     

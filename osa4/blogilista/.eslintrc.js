@@ -8,7 +8,6 @@ module.exports = {
   'parserOptions': {
     'ecmaVersion': 12
   },
-  'eslint no-undef': 'error',
   'rules': {
     'indent': [
       'error',
@@ -34,6 +33,6 @@ module.exports = {
     'arrow-spacing': [
       'error', { 'before': true, 'after': true }
     ],
-    'no-console': 0
-  }
+    'no-console': 0,
+  },
 }

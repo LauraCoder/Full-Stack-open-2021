@@ -1,0 +1,10 @@
+PUT http://localhost:3001/api/blogs/6128c7d46216d1440842f670
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5ld1VzZXIiLCJpZCI6IjYxMjhiNjc2NTE0ZDU0M2RiMDk2NzE2NCIsImlhdCI6MTYzMDQyNTk0NiwiZXhwIjoxNjMwNDI5NTQ2fQ.5R4XvjJ0Za9QQpqk4QrCdGiTIuW31YyaXOZN9YkNkK0
+Content-Type: application/json
+
+{
+  "title": "Recipe Blog",
+  "author": "Cook",
+  "url": "recipeblog.com",
+  "likes": 8
+}

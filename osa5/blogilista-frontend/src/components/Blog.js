@@ -1,10 +1,15 @@
 import React from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({ blog, addMoreLikes }) => {
+
   return (
-  <div>
-    {blog.title} {blog.author}
-  </div>  
+    <>
+      <li>
+        <p>{blog.url}</p>
+        <p>likes: {blog.likes} <button onClick={addMoreLikes}>like</button></p>
+        <p>author: {blog.author}</p>
+      </li>
+    </>
   )
 }
 

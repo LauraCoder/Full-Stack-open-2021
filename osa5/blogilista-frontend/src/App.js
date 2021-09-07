@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import React, { useState, useRef, useEffect } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import BlogList from './components/BlogList'
+import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
 
@@ -18,8 +18,8 @@ const App = () => {
     blogService
       .getAll()
       .then(blogs =>
-      setBlogs( blogs )
-    )  
+        setBlogs( blogs )
+      )
   }, [])
 
   useEffect(() => {
@@ -40,14 +40,14 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
     } catch (exception) {
       setMessage({
-        text: 'wrong credentials', 
+        text: 'wrong credentials',
         type: 'error'
       })
       setTimeout(() => {
@@ -61,10 +61,10 @@ const App = () => {
     try {
       window.localStorage.removeItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       setUser(null)
       setMessage({
-        text: `you are now logged out`,
+        text: 'you are now logged out',
         type: 'success'
       })
       setTimeout(() => {
@@ -72,7 +72,7 @@ const App = () => {
       }, 3000)
     } catch (exception) {
       setMessage({
-        text: 'something went wrong while logging out', 
+        text: 'something went wrong while logging out',
         type: 'error'
       })
       setTimeout(() => {
@@ -80,39 +80,26 @@ const App = () => {
       }, 3000)
     }
   }
-/*
-  const handleNewBlog = (event) => {
-    console.log(event.target.value)
-    setNewBlog(event.target.value)
-  }*/
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url
-    }
-
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService
-      .create(newBlog)
+      .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setAuthor('')
-        setTitle('')
-        setUrl('')
         setMessage({
-          text: `a new blog ${newBlog.title} by ${newBlog.author}`,
+          text: `a new blog ${blogObject.title} by ${blogObject.author}`,
           type: 'success'
         })
         setTimeout(() => {
           setMessage(null)
         }, 3000)
+        console.log('Blog added')
       })
       .catch(error => {
         console.log(error.response.data)
         setMessage({
-          text: 'something went wrong, new blog wasn not added', 
+          text: 'something went wrong, new blog wasn not added',
           type: 'error'
         })
         setTimeout(() => {
@@ -120,91 +107,91 @@ const App = () => {
         }, 3000)
       })
   }
-/*
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
-    try {
-      const blogObject = await blogService.create({
-        title, password,
-      })
-      blogService.create(blogObject)
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
-    }
-  }
-*/
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username 
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password 
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
+
+  const blogFormRef = useRef()
 
   const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        title 
-          <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        author 
-          <input
-          type="text"
-          value={author}
-          name="Username"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url 
-          <input
-          type="text"
-          value={url}
-          name="Username"
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>  
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
   )
 
-  /* 
-      <input
-        value={newBlog}
-        onChange={handleNewBlog}
-      />*/
+  const addLikes = async (blogObject) => {
+    await blogService.update(blogObject.id, blogObject)
+    blogService.getAll()
+      .then(blogs => { setBlogs(blogs) })
+      .then(() => {
+        setMessage({
+          text: 'New like was added!',
+          type: 'success'
+        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
+        console.log('Blog added')
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        setMessage({
+          text: 'Adding like did not work',
+          type: 'error'
+        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
+      })
+  }
+
+  const deleteBlog = (id, title) => {
+    if (window.confirm(`Delete ${title} ?`)) {
+      blogService
+        .deleteBlog(id)
+        .then(response => {
+          setBlogs(blogs.filter(blog => blog.id !== id))
+          setMessage({
+            text: `Blog ${title} was deleted`,
+            type: 'success'
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 2000)
+          console.log('Blog deleted', response)
+        })
+        .catch(error => {
+          setMessage({
+            text: `Blog '${title}' was already removed from server`,
+            type: 'error'
+          })
+          setTimeout(() => {
+            setMessage(null)
+          }, 2000)
+          console.error(error)
+          setBlogs(blogs.filter(blog => blog.id !== id))
+        })
+    }
+  }
+
+  const sortBlogs = () => {
+    return (
+      blogs
+        .sort((a,b) => b.likes - a.likes)
+        .map(blog =>
+          <BlogList key={blog.id} blog={blog} addLikes={addLikes} deleteBlog={deleteBlog} user={user}/>
+        )
+    )
+  }
 
   if (user === null) {
     return (
       <div>
-        <h2>Log in to application</h2>
         <Notification message={message} />
-        {loginForm()}
+        <LoginForm
+          handleLogin={handleLogin}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          password={password}
+          username={username}
+        />
       </div>
     )
   }
@@ -215,9 +202,9 @@ const App = () => {
       <Notification message={message} />
       <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
       {blogForm()}
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <ul className='blogStyle'>
+        {sortBlogs()}
+      </ul>
     </div>
   )
 }

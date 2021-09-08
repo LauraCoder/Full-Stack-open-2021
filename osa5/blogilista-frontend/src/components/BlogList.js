@@ -16,14 +16,18 @@ const BlogList = ({ blog, addLikes, deleteBlog, user }) => {
     deleteBlog(blog.id, blog.title)
   }
 
+  const label = show
+    ? 'hide'
+    : 'show'
+
   //Clicking title will either show or hide information of a blog
   if (show) {
     return (
       <>
-        <li>
-          <h4>{blog.title}</h4>
+        <li className='blogInfo'>
+          <h4>{blog.title} - {blog.author}</h4>
           <button onClick={handleClick}>
-            {show ? 'hide' : 'show' }
+            {label}
           </button>
           <ul className='blogInfo'>
             <Blog blog={blog} addMoreLikes={addMoreLikes} removeBlog={removeBlog} user={user} />
@@ -37,10 +41,10 @@ const BlogList = ({ blog, addLikes, deleteBlog, user }) => {
   //If title is not clicked, only the list of filtered countries will be shown
   return (
     <>
-      <li>
-        <h4>{blog.title}</h4>
+      <li className='blogHeader'>
+        <h4>{blog.title} - {blog.author}</h4>
         <button onClick={handleClick}>
-          {show ? 'hide' : 'show' }
+          {label}
         </button>
       </li>
     </>

@@ -7,7 +7,6 @@ const Blog = ({ blog, addMoreLikes }) => {
       <li>
         <p>{blog.url}</p>
         <p>likes: {blog.likes} <button onClick={addMoreLikes}>like</button></p>
-        <p>author: {blog.author}</p>
       </li>
     </>
   )

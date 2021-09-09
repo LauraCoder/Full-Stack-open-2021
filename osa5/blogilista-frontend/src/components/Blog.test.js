@@ -20,7 +20,6 @@ beforeEach(() => {
     username: 'blogger'
   }
 
-  //let addLikes
   let deleteBlog
 
   mockHandler = jest.fn()

@@ -2,6 +2,23 @@ import React, { useState } from 'react'
 import Blog from './Blog'
 import DeleteButton from './DeleteButton'
 
+const BlogHeader = ({ handleClick, label, blog }) => {
+  return (
+    <>
+      <h4>{blog.title} - {blog.author}</h4>
+      <Button handleClick={handleClick} label={label} />
+    </>
+  )
+}
+
+const Button = ({ handleClick, label }) => {
+  return (
+    <button onClick={handleClick}>
+      {label}
+    </button>
+  )
+}
+
 const BlogList = ({ blog, addLikes, deleteBlog, user }) => {
   const [ show, setShow ] = useState(false)
 
@@ -20,15 +37,12 @@ const BlogList = ({ blog, addLikes, deleteBlog, user }) => {
     ? 'hide'
     : 'show'
 
-  //Clicking title will either show or hide information of a blog
+  //Clicking button will either show or hide information of a blog
   if (show) {
     return (
       <>
         <li className='blogInfo'>
-          <h4>{blog.title} - {blog.author}</h4>
-          <button onClick={handleClick}>
-            {label}
-          </button>
+          <BlogHeader handleClick={handleClick} label={label} blog={blog} />
           <ul className='blogInfo'>
             <Blog blog={blog} addMoreLikes={addMoreLikes} removeBlog={removeBlog} user={user} />
             <DeleteButton removeBlog={removeBlog} blog={blog} user={user}/>
@@ -38,14 +52,10 @@ const BlogList = ({ blog, addLikes, deleteBlog, user }) => {
     )
   }
 
-  //If title is not clicked, only the list of filtered countries will be shown
   return (
     <>
       <li className='blogHeader'>
-        <h4>{blog.title} - {blog.author}</h4>
-        <button onClick={handleClick}>
-          {label}
-        </button>
+        <BlogHeader handleClick={handleClick} label={label} blog={blog} />
       </li>
     </>
   )

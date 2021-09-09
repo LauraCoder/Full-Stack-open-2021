@@ -31,6 +31,7 @@ const App = () => {
     }
   }, [])
 
+  //takes care of login
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -56,6 +57,7 @@ const App = () => {
     }
   }
 
+  //takes care of log out
   const handleLogout = (event) => {
     event.preventDefault()
     try {
@@ -81,31 +83,31 @@ const App = () => {
     }
   }
 
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setMessage({
-          text: `a new blog ${blogObject.title} by ${blogObject.author}`,
-          type: 'success'
-        })
-        setTimeout(() => {
-          setMessage(null)
-        }, 3000)
-        console.log('Blog added')
+  //adds a blog
+  const addBlog = async (blogObject) => {
+    try {
+      blogFormRef.current.toggleVisibility()
+      const newBlog = await blogService.create(blogObject)
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      setBlogs(blogs.concat(newBlog))
+      setMessage({
+        text: `a new blog ${newBlog.title} by ${newBlog.author}`,
+        type: 'success'
       })
-      .catch(error => {
-        console.log(error.response.data)
-        setMessage({
-          text: 'something went wrong, new blog wasn not added',
-          type: 'error'
-        })
-        setTimeout(() => {
-          setMessage(null)
-        }, 3000)
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
+    } catch (exception) {
+      setMessage({
+        text: 'something went wrong, new blog wasn not added',
+        type: 'error'
       })
+      setTimeout(() => {
+        setMessage(null)
+      }, 3000)
+    }
   }
 
   const blogFormRef = useRef()
@@ -116,6 +118,7 @@ const App = () => {
     </Togglable>
   )
 
+  //adds likes
   const addLikes = async (blogObject) => {
     await blogService.update(blogObject.id, blogObject)
     blogService.getAll()
@@ -128,7 +131,6 @@ const App = () => {
         setTimeout(() => {
           setMessage(null)
         }, 3000)
-        console.log('Blog added')
       })
       .catch(error => {
         console.log(error.response.data)
@@ -142,72 +144,69 @@ const App = () => {
       })
   }
 
-  const deleteBlog = (id, title) => {
-    if (window.confirm(`Delete ${title} ?`)) {
-      blogService
-        .deleteBlog(id)
-        .then(response => {
-          setBlogs(blogs.filter(blog => blog.id !== id))
-          setMessage({
-            text: `Blog ${title} was deleted`,
-            type: 'success'
-          })
-          setTimeout(() => {
-            setMessage(null)
-          }, 2000)
-          console.log('Blog deleted', response)
+  //deletes a blog
+  const deleteBlog = async (id, title) => {
+    try {
+      if (window.confirm(`Delete ${title} ?`)) {
+        blogService.deleteBlog(id)
+        setBlogs(blogs.filter(blog => blog.id !== id))
+        setMessage({
+          text: `Blog ${title} was deleted`,
+          type: 'success'
         })
-        .catch(error => {
-          setMessage({
-            text: `Blog '${title}' was already removed from server`,
-            type: 'error'
-          })
-          setTimeout(() => {
-            setMessage(null)
-          }, 2000)
-          console.error(error)
-          setBlogs(blogs.filter(blog => blog.id !== id))
-        })
+        setTimeout(() => {
+          setMessage(null)
+        }, 2000)
+      }
+    } catch(exeption) {
+      setMessage({
+        text: `Blog '${title}' was already removed from server`,
+        type: 'error'
+      })
+      setTimeout(() => {
+        setMessage(null)
+      }, 2000)
     }
   }
 
-  const sortBlogs = () => {
-    return (
-      blogs
-        .sort((a,b) => b.likes - a.likes)
-        .map(blog =>
-          <BlogList key={blog.id} blog={blog} addLikes={addLikes} deleteBlog={deleteBlog} user={user}/>
-        )
-    )
-  }
+  //sort blogs so that the one with most likes will be the first on the list
+  const sortedBlogs = () => {
+    const sortBlogs = blogs
+      .sort((a,b) => b.likes - a.likes)
+      .map(blog =>
+        <BlogList key={blog.id} blog={blog} addLikes={addLikes} deleteBlog={deleteBlog} user={user}/>
+      )
 
-  if (user === null) {
     return (
-      <div>
-        <Notification message={message} />
-        <LoginForm
-          handleLogin={handleLogin}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          password={password}
-          username={username}
-        />
-      </div>
+      <ul className='blogStyle' id='allBlogs'>
+        {sortBlogs}
+      </ul>
     )
   }
 
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification message={message} />
-      <p>{user.name} logged in <button onClick={handleLogout}>logout</button></p>
-      {blogForm()}
-      <ul className='blogStyle'>
-        {sortBlogs()}
-      </ul>
-    </div>
+    <>
+      {user === null ?
+        <div>
+          <Notification message={message} />
+          <LoginForm
+            handleLogin={handleLogin}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            password={password}
+            username={username}
+          />
+        </div> :
+        <div>
+          <h2>blogs</h2>
+          <Notification message={message} />
+          <p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
+          {blogForm()}
+          {sortedBlogs()}
+        </div>
+      }
+    </>
   )
 }
-
 
 export default App

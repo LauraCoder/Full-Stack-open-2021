@@ -11,9 +11,9 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(initializeAnecdotes()) 
+    dispatch(initializeAnecdotes())
   },[dispatch])
-  
+
   return (
     <>
       <h2>Anecdotes</h2>

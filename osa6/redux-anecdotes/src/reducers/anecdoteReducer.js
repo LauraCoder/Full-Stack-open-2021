@@ -4,20 +4,20 @@ const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
-    case 'NEW_ANECDOTE':
-      return [...state, action.data]
-    case 'VOTE': {
-      const votedAnecdote = state.find(a => a.id === action.data.id)
-      const updatedVotes = {...votedAnecdote, votes: votedAnecdote.votes + 1}
-      return state.map(anecdote => 
-        anecdote.id !== action.data.id 
-          ? anecdote
-          : updatedVotes
-      )
-    }
-    case 'INIT_ANECDOTES':
-      return action.data
-    default: return state
+  case 'NEW_ANECDOTE':
+    return [...state, action.data]
+  case 'VOTE': {
+    const votedAnecdote = state.find(a => a.id === action.data.id)
+    const updatedVotes = { ...votedAnecdote, votes: votedAnecdote.votes + 1 }
+    return state.map(anecdote =>
+      anecdote.id !== action.data.id
+        ? anecdote
+        : updatedVotes
+    )
+  }
+  case 'INIT_ANECDOTES':
+    return action.data
+  default: return state
   }
 }
 
@@ -50,5 +50,5 @@ export const initializeAnecdotes = () => {
     })
   }
 }
-  
+
 export default anecdoteReducer

@@ -25,8 +25,8 @@ const AnecdoteList = () => {
       return anecdote
     }
     return filter === 'SET_FILTER'
-     ? anecdote
-     : anecdote.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+      ? anecdote
+      : anecdote.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
   })
 
   const vote = (anecdote) => {
@@ -40,11 +40,11 @@ const AnecdoteList = () => {
   return(
     <>
       {anecdotes.sort(sortByVotes).map(anecdote =>
-         <Anecdote
-           key={anecdote.id}
-           anecdote={anecdote}
-           handleClick={() => vote(anecdote)}
-         />
+        <Anecdote
+          key={anecdote.id}
+          anecdote={anecdote}
+          handleClick={() => vote(anecdote)}
+        />
       )}
     </>
   )

@@ -3,8 +3,9 @@ import {
   Switch, Route, Link,
   useRouteMatch, useHistory
 } from "react-router-dom"
+import useField from './hooks'
 
-const Menu = ({ addNew, anecdotes, anecdote, notification }) => {
+const Menu = () => {
   const padding = {
     paddingRight: 5
   }
@@ -13,22 +14,6 @@ const Menu = ({ addNew, anecdotes, anecdote, notification }) => {
       <Link style={padding} to="/">Anecdotes</Link>
       <Link style={padding} to="/create">Create New</Link>
       <Link style={padding} to="/about">About</Link>
-      
-      <Notification notification={notification}/>
-      <Switch>
-          <Route path="/create">
-            <CreateNew addNew={addNew} />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/anecdotes/:id">
-            <Anecdote anecdote={anecdote} />
-          </Route>
-          <Route path="/">
-            <AnecdoteList anecdotes={anecdotes} />
-          </Route>
-      </Switch>
     </div>
   )
 }
@@ -91,9 +76,9 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const { reset: resetContent, ...content} = useField('text')
+  const { reset: resetAuthor, ...author} = useField('text')
+  const { reset: resetInfo, ...info} = useField('text')
 
   const history = useHistory()
 
@@ -101,36 +86,44 @@ const CreateNew = (props) => {
     marginBottom: 20
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (event) => {
+    event.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     history.push('/')
   }
 
+  const handleReset = (event) => {
+    event.preventDefault()
+    resetContent()
+    resetAuthor()
+    resetInfo()
+  }
+
   return (
-    <div>
+    <>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit} style={margin}>
+      <form onSubmit={handleSubmit} style={margin} >
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...info} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button onClick={handleReset} type='reset'>reset</button>
       </form>
-    </div>
+    </>
   )
 
 }
@@ -186,7 +179,22 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu addNew={addNew} anecdotes={anecdotes} anecdote={anecdote} notification={notification} />
+      <Menu />
+      <Notification notification={notification}/>
+      <Switch>
+          <Route path="/create">
+            <CreateNew addNew={addNew} />
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/anecdotes/:id">
+            <Anecdote anecdote={anecdote} />
+          </Route>
+          <Route path="/">
+            <AnecdoteList anecdotes={anecdotes} />
+          </Route>
+      </Switch>
       <Footer />
     </div>
   )

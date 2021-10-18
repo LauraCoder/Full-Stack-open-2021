@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5ld1VzZXIiLCJpZCI6IjYxMjhiNjc2NTE0ZDU0M2RiMDk2NzE2NCIsImlhdCI6MTYzMzcwNjgyOCwiZXhwIjoxNjMzNzEwNDI4fQ.PfsRG9sWyPQ_s8-hEt5pxieM4Cgoj_hD-BD6FQM1JV4
+
+{
+    "title": "New Blog",
+    "author": "Blogger",
+    "url": "newblog.com",
+    "likes": 2,
+    "user": "6124c7f78c07ec3578a0386c"
+}

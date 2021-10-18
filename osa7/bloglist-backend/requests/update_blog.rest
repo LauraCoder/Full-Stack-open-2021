@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/blogs/6128ac530c43e7211c841295
+Content-Type: application/json
+
+{
+  "title": "Recipe Blog",
+  "author": "Cook",
+  "url": "recipeblog.com",
+  "likes": 15
+}

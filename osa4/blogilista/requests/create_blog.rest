@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5ld1VzZXIiLCJpZCI6IjYxMjhiNjc2NTE0ZDU0M2RiMDk2NzE2NCIsImlhdCI6MTYzMDQyODAyNCwiZXhwIjoxNjMwNDMxNjI0fQ.kc3FUg4C-iYkj3sTPERmco7zk8mg-e555nH4MmEBwXk
+
+{
+    "title": "Travel Blog",
+    "author": "Traveler",
+    "url": "travelblog.com",
+    "likes": 15,
+    "user": "6124c7f78c07ec3578a0386c"
+}

@@ -1,0 +1,49 @@
+h4 {
+  display: inline;
+}
+
+.blogStyle {
+  width: 40%;
+  list-style-type: none;
+  line-height: 0.4;
+  padding: 0;
+}
+
+.blogStyle li {
+  background: rgb(134, 206, 184);
+  padding: 5px 15px;
+  margin: 6px 0px 6px 0px;
+}
+
+.blogStyle button {
+  margin-left: 15px;
+}
+
+.blogInfo {
+  padding: 0;
+  list-style-type: none;
+}
+
+.blogInfo li {
+  padding: 0px 5px 1px 5px;
+}
+
+.success {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}

@@ -9,7 +9,10 @@ const EditAuthor = ({show, setError}) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [editAuthor, result] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [ { query: ALL_AUTHORS } ]
+    refetchQueries: [ { query: ALL_AUTHORS } ],
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    }
   })
 
   useEffect(() => {

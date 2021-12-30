@@ -17,6 +17,10 @@ const Recommend = ({ show }) => {
   const books = resultBooks.data.allBooks || []
   const filterBooks = books.filter(b => b.genres.includes(user.favoriteGenre))
 
+  if (!show) {
+    return null
+  }
+
   return (
     <div>
       <h2>recommendations</h2>

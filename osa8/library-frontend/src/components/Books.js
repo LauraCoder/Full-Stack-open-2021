@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import React, { useEffect, useState } from 'react'
 
-const Books = ({ show }) => {
-  const result = useQuery(ALL_BOOKS)
+const Books = ({ show, getBooks, result }) => {
   const [ filterGenres, setFilter ] = useState('')
+
+  useEffect(() => {
+    getBooks()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!show) {
     return null

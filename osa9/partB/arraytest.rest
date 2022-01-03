@@ -1,6 +1,0 @@
-POST http://localhost:3003/numbersArray
-Content-Type: application/json
-
-{
-  "numbersArray": [1, 0, 2, 0, 3, 0, 2.5]
-}

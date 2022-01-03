@@ -1,7 +1,7 @@
 interface BmiValues {
   height: number;
   weight: number;
-};
+}
 
 const parseBmiArguments = (args: Array<string>): BmiValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
@@ -11,13 +11,13 @@ const parseBmiArguments = (args: Array<string>): BmiValues => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
 };
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const heightInMeters = height/100;
   const result = weight/heightInMeters/heightInMeters;
   if(result < 17){
@@ -27,11 +27,17 @@ const calculateBmi = (height: number, weight: number): string => {
   } else if (result > 25){
     return 'Overweight';
   }
+  return 'undefined';
 };
 
-try {
-  const { height, weight } = parseBmiArguments(process.argv);
-  console.log(calculateBmi(height, weight));
-} catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
-};
+if(require.main === module){
+  try {
+    const { height, weight } = parseBmiArguments(process.argv);
+    console.log(calculateBmi(height, weight));
+  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    console.log('Error, something bad happened, message: ', e.message);
+  }
+}
+
+export default calculateBmi;

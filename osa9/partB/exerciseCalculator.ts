@@ -4,14 +4,13 @@ interface ExerciseValues {
 }
 
 const parseArguments = (args: Array<string>): ExerciseValues => {
-  const dailyExerciseHours = args.slice(2).map(h => Number(h));
+  const dailyExerciseHours = args.slice(3).map(h => Number(h));
   console.log(dailyExerciseHours);
   if (dailyExerciseHours.length < 1) throw new Error('Not enough arguments');
 
   if (isNaN(Number(args[2])) || dailyExerciseHours.every(isNaN)) {
     throw new Error('Only numbers are allowed');
   }
-  //.some
 
   return {
     target: Number(args[2]),
@@ -57,14 +56,6 @@ export const calculateExercises = (target: number, dailyExerciseHours: number[])
     ratingDescription,
     target,
     average,
-  };
-};
-
-
-export const getArray = (numbersArray: number[]) => {
-
-  return{
-    numbersArray
   };
 };
 

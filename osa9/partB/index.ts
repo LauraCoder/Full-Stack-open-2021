@@ -4,8 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
-import { calculateExercises, getArray } from './exerciseCalculator';
-
+import { calculateExercises } from './exerciseCalculator';
 const app = express();
 app.use(express.json());
 
@@ -28,21 +27,14 @@ app.get('/bmi', (req, res) => {
     });
 });
 
-app.post('/numbersArray', (req, res) => {
-  const numbersArray = req.body.numbersArray;
-  const dailyHours = numbersArray.slice(3).map((hours: number) => Number(hours));
-  const theArray = getArray(numbersArray);
-  console.log(dailyHours);
-  res.json({ theArray });
-});
-
 app.post('/exercises', (req, res) => {
     const { target, daily_exercises } = req.body;
     const dailyExerciseHours = daily_exercises.map((hours: number) => Number(hours));
+    const malformattedParameters = dailyExerciseHours.some((parameter: number) => isNaN(Number(parameter)));
 
     if( !target || !daily_exercises || daily_exercises.length < 1 ) {
       res.status(400).json({error: 'parameters missing'});
-    } else if (isNaN(Number(target)) || dailyExerciseHours.every(isNaN))  {
+    } else if (isNaN(Number(target)) || malformattedParameters)  {
       res.status(400).json({error: 'malformatted parameters'});
     }
 

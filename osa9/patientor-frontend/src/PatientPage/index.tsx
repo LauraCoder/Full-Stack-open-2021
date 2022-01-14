@@ -1,12 +1,13 @@
 import React from "react";
-import { useParams } from 'react-router-dom';
-import { Container } from "semantic-ui-react";
+import { useParams } from "react-router-dom";
+import { Container, Icon } from "semantic-ui-react";
+
 import { useStateValue } from "../state";
 import { Patient } from "../types";
-import { Icon } from 'semantic-ui-react';
+import EntryDetails from "./EntryDetails";
 
 const unorderedList = {
-  listStyleType: 'none',
+  listStyleType: "none",
   padding: 0,
 };
 
@@ -18,25 +19,36 @@ const PatientPage = () => {
     (patient: Patient) => patient.id === id
   );
 
-  const genderIcon = () => {
-    if ( patient?.gender === 'female') {
-      return <Icon name='venus' />;
-    } else if ( patient?.gender === 'male') {
-      return <Icon name='mars' />;
-    } else {
-      return <Icon name='genderless' />;
-    }
-  };
+  let genderIcon: "venus" | "mars" | "genderless";
+
+  switch(patient?.gender) {
+    case "female":
+      genderIcon = "venus";
+      break;
+    case "male":
+      genderIcon = "mars";
+      break;
+    case "other":
+      genderIcon = "genderless";
+      break;
+    default:
+      return null;
+  }
 
   return (
     <div className="App">
       {patient &&
         <Container>
-          <h3>{patient.name} {genderIcon()}</h3>
+          <h3>{patient.name} <Icon name={genderIcon} /></h3>
           <ul style={unorderedList}>
             <li>ssn: {patient.ssn}</li>
             <li>occupation: {patient.occupation}</li>
           </ul>
+          <h4>Entries:</h4>
+          {patient.entries &&
+            patient.entries.map(entry => (
+              <EntryDetails entry={entry} key={entry.id}/>
+          ))}
         </Container>
       }
     </div>

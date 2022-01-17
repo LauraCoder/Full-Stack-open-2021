@@ -1,0 +1,13 @@
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+    "date": "2019-01-02",
+    "type": "HealthCheck",
+    "specialist": "MD House",
+    "diagnosisCodes": [
+      "S03.5"
+    ],
+    "description": "Patient mistakenly found himself in a nuclear plant waste site without protection gear. Very minor radiation poisoning.",
+    "healthCheckRating": 0
+}

@@ -8,8 +8,8 @@ const DiagnoseDetails = ({ diagnosisCodes }: {diagnosisCodes: Array<Diagnosis["c
     
   return (
     <>  
-      {diagnosisCodes.map(code => (
-        <List.Item key={code}>
+      {diagnosisCodes.map((code, i) => (
+        <List.Item key={i}>
           {code} {diagnosis[code]?.name}
         </List.Item>
       ))}

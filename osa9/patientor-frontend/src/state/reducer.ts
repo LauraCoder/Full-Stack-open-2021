@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { State } from "./state";
 import { Diagnosis, Patient } from "../types";
 
@@ -12,6 +13,10 @@ export type Action =
     }
   | {
       type: "ADD_PATIENT";
+      payload: Patient;
+    }
+  | {
+      type: "ADD_ENTRY";
       payload: Patient;
     };
 
@@ -47,6 +52,17 @@ export const reducer = (state: State, action: Action): State => {
           [action.payload.id]: action.payload
         }
       };
+    case "ADD_ENTRY":
+      return {
+        ...state,
+        patients: {
+          ...state.patients,
+          [action.payload.id]: {
+            ...state.patients[action.payload.id],
+            ...action.payload,
+          }
+        }
+      };
     default:
       return state;
   }
@@ -70,5 +86,12 @@ export const addNewPatient = (newPatient: Patient): Action => {
   return {
     type: "ADD_PATIENT", 
     payload: newPatient
+  };
+};
+
+export const addNewEntry = (newEntry: Patient): Action => {
+  return {
+    type: "ADD_ENTRY", 
+    payload: newEntry
   };
 };

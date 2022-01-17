@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
 
@@ -12,7 +12,6 @@ import { useStateValue, addNewPatient } from "../state";
 
 const PatientListPage = () => {
   const [{ patients }, dispatch] = useStateValue();
-
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
 
@@ -32,8 +31,8 @@ const PatientListPage = () => {
       dispatch(addNewPatient(newPatient));
       closeModal();
     } catch (e) {
-      console.error(e.response?.data || "Unknown Error");
-      setError(e.response?.data?.error || "Unknown error");
+      console.error(e.response?.data || 'Unknown Error');
+      setError(e.response?.data?.error || 'Unknown error');
     }
   };
 

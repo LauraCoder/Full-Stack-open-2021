@@ -23,7 +23,7 @@
 <p>TypeScript</p>
 <h3>Part 10</h3>
 <p>React Native</p>
-<p>Exercises in the part 10 of Full Stack Open 2021 course (implemented by Helsinki University) included creating a simple React Native app. Part 10 required an own repository and can be found <a href="https://github.com/LauraCoder/Full-Stack-open-2021-part10">here.</a></p>
+<p>Exercises in the part 10 included creating a simple React Native app. Part 10 required an own repository and can be found <a href="https://github.com/LauraCoder/Full-Stack-open-2021-part10">here.</a></p>
 <h3>Part 11</h3>
 <p>CI/CD</p>
 <h3>Part 12</h3>
